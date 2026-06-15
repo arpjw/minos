@@ -3,4 +3,3 @@ _opam/
 .DS_Store
 *.byte
 *.native
-web/main_js.bc.js
