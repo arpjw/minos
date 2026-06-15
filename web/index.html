@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minos — Type Inference Playground</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+</head>
+<body>
+  <header>
+    <span class="logo">Minos</span>
+    <span class="tagline">Hindley-Milner + Row Polymorphism</span>
+    <div class="header-right">
+      <select id="examples-select" class="examples-select">
+        <option value="">Load example…</option>
+        <option value="basics">Basics</option>
+        <option value="recursion">Recursion</option>
+        <option value="records">Row Polymorphism</option>
+      </select>
+      <a href="https://github.com/arpjw/minos" class="gh-link">GitHub ↗</a>
+    </div>
+  </header>
+
+  <main>
+    <div id="editor-pane">
+      <div id="editor"></div>
+    </div>
+    <div class="divider"></div>
+    <div id="output-pane">
+      <pre id="output"></pre>
+    </div>
+  </main>
+
+  <div id="status"></div>
+
+  <!-- CodeMirror -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/mllike/mllike.min.js"></script>
+
+  <!-- Compiled OCaml type inference engine -->
+  <script src="main_js.bc.js"></script>
+
+  <!-- Playground logic -->
+  <script src="editor.js"></script>
+</body>
+</html>

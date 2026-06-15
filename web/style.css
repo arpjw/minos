@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:       #0b0b0b;
+  --surface:  #111111;
+  --surface2: #181818;
+  --border:   #232323;
+  --text:     #e0e0e0;
+  --muted:    #555;
+  --accent:   #b3ff00;
+  --error:    #ff6b6b;
+  --comment:  #444;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --font-ui:  'DM Sans', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  height: 46px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.logo {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.tagline {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.examples-select {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+.examples-select:hover { border-color: var(--accent); }
+.examples-select option { background: var(--surface2); }
+
+.gh-link {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+.gh-link:hover { color: var(--text); }
+
+main {
+  display: flex;
+  height: calc(100vh - 46px);
+  overflow: hidden;
+}
+
+.divider {
+  width: 1px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* ── Editor pane ─────────────────────────────────────────────────────────── */
+#editor-pane {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* CodeMirror overrides */
+.CodeMirror {
+  height: 100%;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.75;
+  padding: 1rem 0;
+}
+
+.CodeMirror-scroll { padding-bottom: 40px; }
+.CodeMirror-gutters { background: var(--surface); border-right: 1px solid var(--border); }
+.CodeMirror-linenumber { color: var(--muted); padding: 0 12px; }
+.CodeMirror-cursor { border-left: 1px solid var(--accent) !important; }
+.CodeMirror-selected { background: rgba(179,255,0,0.08) !important; }
+
+/* Syntax coloring — minimal palette */
+.cm-keyword  { color: #c792ea; }
+.cm-def      { color: var(--text); }
+.cm-variable { color: var(--text); }
+.cm-number   { color: #f78c6c; }
+.cm-string   { color: #c3e88d; }
+.cm-comment  { color: var(--comment); font-style: italic; }
+.cm-builtin  { color: #82aaff; }
+.cm-operator { color: var(--muted); }
+
+/* ── Output pane ─────────────────────────────────────────────────────────── */
+#output-pane {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 1rem 0;
+  background: var(--bg);
+}
+
+#output {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.75;
+  white-space: pre;
+  padding: 0 1.5rem;
+}
+
+.line-ok    { color: var(--accent); opacity: 0.85; }
+.line-err   { color: var(--error); }
+.line-empty { color: transparent; user-select: none; }
+.line-comment { color: var(--comment); }
+
+/* Fade-in animation for result lines */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#output span { animation: fadeIn 80ms ease-out; }
+
+/* ── Status bar ──────────────────────────────────────────────────────────── */
+#status {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 22px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 0.7rem;
+  color: var(--muted);
+  gap: 1rem;
+  z-index: 10;
+}
+#status .ok   { color: var(--accent); }
+#status .fail { color: var(--error); }
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }

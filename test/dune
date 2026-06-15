@@ -1,0 +1,4 @@
+(test
+ (name test_infer)
+ (modules test_infer)
+ (libraries minos_lib alcotest))

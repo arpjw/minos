@@ -1,0 +1,5 @@
+(library
+ (name minos_lib)
+ (wrapped false)
+ (modules ast types env lexer parser infer unify generalize print error)
+ (libraries str))
