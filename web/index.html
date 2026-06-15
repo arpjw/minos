@@ -3,47 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minos — Type Inference Playground</title>
+  <title>Minos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0a0a0a;
+      --text:        #e8e8e8;
+      --muted:       #4a4a4a;
+      --border:      #1e1e1e;
+      --font-serif:  'DM Serif Display', Georgia, 'Times New Roman', serif;
+      --font-sans:   'DM Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 600px;
+      padding: 0 2rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(5rem, 14vw, 8rem);
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 1.75rem;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 3rem;
+      font-weight: 400;
+      letter-spacing: 0.015em;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 0.625rem;
+      justify-content: center;
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.5625rem 1.375rem;
+      border-radius: 3px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: opacity 0.12s ease;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .btn:hover { opacity: 0.75; }
+
+    .btn-ghost {
+      color: var(--text);
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      opacity: 1;
+      border-color: #333;
+    }
+
+    .btn-primary {
+      color: #0a0a0a;
+      background: #e8e8e8;
+      border: 1px solid transparent;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <span class="logo">Minos</span>
-    <span class="tagline">Hindley-Milner + Row Polymorphism</span>
-    <div class="header-right">
-      <select id="examples-select" class="examples-select">
-        <option value="">Load example…</option>
-        <option value="basics">Basics</option>
-        <option value="recursion">Recursion</option>
-        <option value="records">Row Polymorphism</option>
-      </select>
-      <a href="https://github.com/arpjw/minos" class="gh-link">GitHub ↗</a>
+  <div class="hero">
+    <h1>Minos</h1>
+    <p class="subtitle">A Hindley-Milner type inference engine written in OCaml</p>
+    <div class="buttons">
+      <a href="https://github.com/arpjw/minos" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">Source</a>
+      <a href="playground.html" class="btn btn-primary">Experiment</a>
     </div>
-  </header>
-
-  <main>
-    <div id="editor-pane">
-      <div id="editor"></div>
-    </div>
-    <div class="divider"></div>
-    <div id="output-pane">
-      <pre id="output"></pre>
-    </div>
-  </main>
-
-  <div id="status"></div>
-
-  <!-- CodeMirror -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/mllike/mllike.min.js"></script>
-
-  <!-- Compiled OCaml type inference engine -->
-  <script src="main_js.bc.js"></script>
-
-  <!-- Playground logic -->
-  <script src="editor.js"></script>
+  </div>
 </body>
 </html>
