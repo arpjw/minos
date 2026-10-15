@@ -3,6 +3,10 @@ let current_level = ref 0
 let enter_level () = incr current_level
 let leave_level () = decr current_level
 
+let with_level f =
+  enter_level ();
+  Fun.protect ~finally:leave_level f
+
 let fresh_var () =
   let id = Types.fresh_id () in
   Types.TVar (ref (Types.Unbound (id, !current_level)))

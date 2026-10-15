@@ -1,8 +1,7 @@
 let infer_and_extend_env env name is_rec rhs =
   match
     (try
-      Generalize.enter_level ();
-      let rhs_ty =
+      let rhs_ty = Generalize.with_level (fun () ->
         if is_rec then begin
           let self_ty = Generalize.fresh_var () in
           let env' = Env.extend env name (Types.Forall ([], self_ty)) in
@@ -11,8 +10,7 @@ let infer_and_extend_env env name is_rec rhs =
           rhs_ty
         end else
           Infer.infer env rhs
-      in
-      Generalize.leave_level ();
+      ) in
       let scheme = Generalize.generalize rhs_ty in
       `Ok scheme
     with

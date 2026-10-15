@@ -12,12 +12,21 @@ let check_infers name input expected =
 
 let check_fails name input =
   test_case name `Quick (fun () ->
-    try
-      ignore (infer_string input);
-      fail (name ^ ": expected type error but succeeded")
-    with
-    | Error.TypeError _ -> ()
-    | Failure _ -> ())
+    match (try ignore (infer_string input); false
+           with Error.TypeError _ -> true) with
+    | true -> ()
+    | false -> fail (name ^ ": expected type error but succeeded"))
+
+let level_tests = [
+  test_case "failed recursive unification restores level" `Quick (fun () ->
+    let before = !(Generalize.current_level) in
+    let expr = Parser.parse (Lexer.tokenize "let rec f = f 1 in f") in
+    (match (try ignore (Infer.infer_top Env.base expr); false
+            with Error.TypeError _ -> true) with
+     | true -> ()
+     | false -> fail "expected recursive type error");
+    check int "level after failure" before !(Generalize.current_level));
+]
 
 let identity_tests = [
   check_infers "identity" "fun x -> x" "a -> a";
@@ -79,4 +88,5 @@ let () =
     "recursion",  rec_tests;
     "records",    record_tests;
     "errors",     error_tests;
+    "levels",     level_tests;
   ]
