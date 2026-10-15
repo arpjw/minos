@@ -48,31 +48,22 @@ let rec infer (env : Env.t) (expr : Ast.expr) : ty =
       res_ty
 
   | Ast.Let (x, rhs, body) ->
-      enter_level ();
-      (match infer env rhs with
-       | rhs_ty ->
-           leave_level ();
-           let scheme = generalize rhs_ty in
-           let env' = Env.extend env x scheme in
-           infer env' body
-       | exception e ->
-           leave_level ();
-           raise e)
+      let rhs_ty = with_level (fun () -> infer env rhs) in
+      let scheme = generalize rhs_ty in
+      let env' = Env.extend env x scheme in
+      infer env' body
 
   | Ast.LetRec (x, rhs, body) ->
-      enter_level ();
-      let self_ty = fresh_var () in
-      let env'    = Env.extend env x (Forall ([], self_ty)) in
-      (match infer env' rhs with
-       | rhs_ty ->
-           unify self_ty rhs_ty;
-           leave_level ();
-           let scheme = generalize rhs_ty in
-           let env'' = Env.extend env x scheme in
-           infer env'' body
-       | exception e ->
-           leave_level ();
-           raise e)
+      let rhs_ty = with_level (fun () ->
+        let self_ty = fresh_var () in
+        let env' = Env.extend env x (Forall ([], self_ty)) in
+        let rhs_ty = infer env' rhs in
+        unify self_ty rhs_ty;
+        rhs_ty
+      ) in
+      let scheme = generalize rhs_ty in
+      let env'' = Env.extend env x scheme in
+      infer env'' body
 
   | Ast.If (cond, then_, else_) ->
       let cond_ty = infer env cond in
@@ -103,11 +94,5 @@ let rec infer (env : Env.t) (expr : Ast.expr) : ty =
       field_ty
 
 let infer_top (env : Env.t) (expr : Ast.expr) : Types.scheme =
-  enter_level ();
-  match infer env expr with
-  | t ->
-      leave_level ();
-      generalize t
-  | exception e ->
-      leave_level ();
-      raise e
+  let t = with_level (fun () -> infer env expr) in
+  generalize t
